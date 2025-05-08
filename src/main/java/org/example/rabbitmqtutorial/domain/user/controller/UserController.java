@@ -2,6 +2,7 @@ package org.example.rabbitmqtutorial.domain.user.controller;
 
 import org.example.rabbitmqtutorial.domain.user.dto.UserCreateRequest;
 import org.example.rabbitmqtutorial.domain.user.dto.UserResponse;
+import org.example.rabbitmqtutorial.domain.user.dto.UserUpdateRequest;
 import org.example.rabbitmqtutorial.domain.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,18 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> userResponseList = userService.getAllUsers();
         return ResponseEntity.ok(userResponseList);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserUpdateRequest request)
+    {
+        UserResponse userResponse = userService.updateUser(request);
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();     // HTTP 204
     }
 }
