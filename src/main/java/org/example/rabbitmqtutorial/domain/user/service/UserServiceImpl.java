@@ -1,7 +1,7 @@
 package org.example.rabbitmqtutorial.domain.user.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.rabbitmqtutorial.domain.user.dto.UserCreateRequest;
 import org.example.rabbitmqtutorial.domain.user.dto.UserResponse;
 import org.example.rabbitmqtutorial.domain.user.dto.UserUpdateRequest;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserResponse createUser(UserCreateRequest request) {
