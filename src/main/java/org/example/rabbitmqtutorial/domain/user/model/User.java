@@ -29,7 +29,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Builder // 빌더 패턴
+    @Builder // 빌더 패턴ㅎㅎ
     public User(String userName, String password, String email){
         this.userName = userName;
         this.password = password;
