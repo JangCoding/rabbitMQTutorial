@@ -11,6 +11,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(UserCreateRequest request) {
 
+
+
         //User 생성해서 레포지토리에 저장
         User user = User.builder()
                 .userName(request.getUserName())
@@ -22,7 +24,6 @@ public class UserServiceImpl implements UserService {
         return  UserResponse.builder()
                 .userName(user.getUserName())
                 .email(user.getEmail())
-
                 .build();
     }
 
