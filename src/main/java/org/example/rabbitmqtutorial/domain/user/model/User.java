@@ -23,13 +23,13 @@ public class User {
     private String password;
     private String email;
 
-    @CreationTimestamp
+    @CreationTimestamp  // 생성시각 자동 설정
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @UpdateTimestamp    // 수정시각 자동 설정
     private LocalDateTime updatedAt;
 
-    @Builder
+    @Builder    // 빌더 패턴
     public User(String userName, String password, String email){
         this.userName = userName;
         this.password = password;
