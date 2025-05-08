@@ -15,7 +15,7 @@ public class UserResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @Builder
+
     public UserResponse(Long userId, String userName, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.userName = userName;
