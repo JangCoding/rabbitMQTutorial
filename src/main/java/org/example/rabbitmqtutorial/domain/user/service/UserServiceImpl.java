@@ -1,6 +1,7 @@
 package org.example.rabbitmqtutorial.domain.user.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.NoArgsConstructor;
 import org.example.rabbitmqtutorial.domain.user.dto.UserCreateRequest;
 import org.example.rabbitmqtutorial.domain.user.dto.UserResponse;
 import org.example.rabbitmqtutorial.domain.user.dto.UserUpdateRequest;
@@ -8,10 +9,13 @@ import org.example.rabbitmqtutorial.domain.user.model.User;
 import org.example.rabbitmqtutorial.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    public UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserResponse createUser(UserCreateRequest request) {
@@ -44,6 +48,15 @@ public class UserServiceImpl implements UserService {
                 .updatedAt(user.getUpdatedAt())
                 .build();
 
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers(){
+        List<User> userList = userRepository.findAll();
+
+        return userList.stream()
+                .map(UserResponse::from)    // (user -> UserResponse.from(user)) 와 동일한 문법. 메서드 레퍼런스
+                .toList(); // stream() 의 결과로 새로운 List 만들어냄.
     }
 
     @Override
