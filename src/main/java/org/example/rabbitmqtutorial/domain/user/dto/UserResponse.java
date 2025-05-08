@@ -6,6 +6,7 @@ import org.example.rabbitmqtutorial.domain.user.model.User;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @NoArgsConstructor  // 필요 시 (Jackson 등에서 사용)
 public class UserResponse {
     private Long userId;
