@@ -2,9 +2,11 @@ package org.example.rabbitmqtutorial.domain.user.dto;
 
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class UserUpdateRequest {
     private Long userId;
     private String userName;

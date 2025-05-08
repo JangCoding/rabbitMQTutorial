@@ -1,13 +1,12 @@
 package org.example.rabbitmqtutorial.domain.user.dto;
 
-import jakarta.persistence.Entity;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.example.rabbitmqtutorial.domain.user.model.User;
 
 import java.time.LocalDateTime;
 
-@Data   // record UserResponse(...) 으로 대체, 생략 가능
+@Getter
+@NoArgsConstructor  // 필요 시 (Jackson 등에서 사용)
 public class UserResponse {
     private Long userId;
     private String userName;
