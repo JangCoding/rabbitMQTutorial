@@ -7,6 +7,7 @@ import org.example.rabbitmqtutorial.domain.user.dto.UserResponse;
 import org.example.rabbitmqtutorial.domain.user.dto.UserUpdateRequest;
 import org.example.rabbitmqtutorial.domain.user.model.User;
 import org.example.rabbitmqtutorial.domain.user.repository.UserRepository;
+import org.example.rabbitmqtutorial.global.exception.EmailAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserCreateRequest request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyExistsException("---Email Already Exists---");
+        }
 
         //User 생성해서 레포지토리에 저장
         User user = User.builder()
@@ -39,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUser(Long userId) {
         User user = userRepository.findUserByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id"));
+                .orElseThrow(() -> new EntityNotFoundException("---User not found with ID---"));
 
         return UserResponse.builder()
                 .userId(user.getUserId())
