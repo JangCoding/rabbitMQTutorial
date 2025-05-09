@@ -1,6 +1,7 @@
 package org.example.rabbitmqtutorial.domain.user.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.rabbitmqtutorial.domain.user.dto.UserCreateRequest;
 import org.example.rabbitmqtutorial.domain.user.dto.UserResponse;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserResponse createUser(UserCreateRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .build();
 
-        userRepository.save(user);
+//        userRepository.save(user);   // @Transactional로 생략 가능
 
         return  UserResponse.builder()
                 .userName(user.getUserName())
@@ -66,19 +68,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse updateUser(UserUpdateRequest request){
         User user = userRepository.findUserByUserId(request.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id"));
 
-        user.setUserName(request.getUserName());
-        user.setEmail(request.getEmail());
+        if(user.getUserName() != null && !user.getUserName().equals(request.getUserName())) {
+            user.setUserName(request.getUserName());
+        }
 
-        userRepository.save(user);
+        if(user.getEmail() != null && !user.getEmail().equals(request.getEmail())) {
+            user.setEmail(request.getEmail());
+        }
+
+//        userRepository.save(user); // @Transactional로 생략 가능
 
         return UserResponse.from(user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findUserByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id"));
