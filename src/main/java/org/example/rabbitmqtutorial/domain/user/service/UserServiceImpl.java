@@ -73,15 +73,20 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByUserId(request.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id"));
 
-        if(user.getUserName() != null && !user.getUserName().equals(request.getUserName())) {
+        boolean isChanged = false;
+
+        if(request.getUserName() != null && !user.getUserName().equals(request.getUserName())) {
             user.setUserName(request.getUserName());
+            isChanged = true;
         }
 
-        if(user.getEmail() != null && !user.getEmail().equals(request.getEmail())) {
+        if(request.getEmail() != null && !user.getEmail().equals(request.getEmail())) {
             user.setEmail(request.getEmail());
+            isChanged = true;
         }
 
-//        userRepository.save(user); // @Transactional로 생략 가능
+        if(isChanged)
+            userRepository.save(user); // @Transactional 있어서 생략 가능
 
         return UserResponse.from(user);
     }
