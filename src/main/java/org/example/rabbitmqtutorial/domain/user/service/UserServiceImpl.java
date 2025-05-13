@@ -23,6 +23,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse createUser(UserCreateRequest request) {
 
+        //request 내용 중 null이 발견된 경우
+        if (request.getUserName() == null || request.getPassword() == null || request.getEmail() == null) {
+            throw new NullPointerException("---Null Input---");
+        }
+
+        //이메일 중복 확인
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("---Email Already Exists---");
         }
@@ -34,7 +40,7 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .build();
 
-//        userRepository.save(user);   // @Transactional로 생략 가능
+        userRepository.save(user);   // @Transactional로 생략 가능
 
         return  UserResponse.builder()
                 .userName(user.getUserName())
