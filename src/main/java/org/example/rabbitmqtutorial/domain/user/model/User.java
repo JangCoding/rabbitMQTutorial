@@ -31,13 +31,10 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Builder // 빌더 패턴
-    public User(Long userId, String userName, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.userId = userId;
+    @Builder // 빌더 패턴ㅎㅎ
+    public User(String userName, String password, String email){
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }
