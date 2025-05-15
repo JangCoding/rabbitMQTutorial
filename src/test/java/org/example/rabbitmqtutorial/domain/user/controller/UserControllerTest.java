@@ -15,15 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)  // 컨트롤러만 테스트
 class UserControllerTest {
@@ -67,6 +67,73 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("단일 조회 성공")
+    void getUser_success() throws Exception {
+        //given
+        UserResponse res = UserResponse.builder()
+                .userId(1L)
+                .userName("jang")
+                .createdAt(LocalDateTime.now())
+                .email("jang@email.com")
+                .build();
+
+        given(userService.getUser(1L)).willReturn(res);
+
+        //when&then
+        mockMvc.perform(get("/user/{userId}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.userName").value("jang"))
+                .andExpect(jsonPath("$.email").value("jang@email.com"));
+
+    }
+
+    @Test
+    @DisplayName("단일 조회 실패-해당 ID 에 유저 없음")
+    void getUser_fail_entityNotFound() throws Exception {
+        //given
+        given(userService.getUser(1L)).willThrow(new EntityNotFoundException());
+
+        //when&then
+        mockMvc.perform(get("/user/{userId}", 1L))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    @DisplayName("전체 조회 성공")
+    void getUserAll_success() throws Exception {
+        //given
+        UserResponse user1 = UserResponse.builder()
+                .userId(1L)
+                .userName("jang")
+                .createdAt(LocalDateTime.now())
+                .email("jang@email.com")
+                .build();
+
+        UserResponse user2 = UserResponse.builder()
+                .userId(2L)
+                .userName("bang")
+                .createdAt(LocalDateTime.now())
+                .email("bang@email.com")
+                .build();
+
+        List<UserResponse> userResponseList = List.of(user1, user2);
+
+
+        given(userService.getAllUsers()).willReturn(userResponseList);
+
+        //when&then
+        mockMvc.perform(get("/user/all"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)));
+
+    }
+
+
+    @Test
     @DisplayName("업데이트 성공")
     void updateUser_success() throws Exception {
         //given
@@ -98,7 +165,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("업데이트 실패 - 해당 ID 에 유저가 없음")
-    void updateUser_fail_noUser() throws Exception {
+    void updateUser_fail_entityNotFound() throws Exception {
         //given
         UserUpdateRequest req = UserUpdateRequest.builder()
                 .userId(1L)
@@ -118,7 +185,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("삭제 실패 - 해당 ID 에 유저가 없음")
-    void deleteUser_fail_noUser() throws Exception {
+    void deleteUser_fail_entityNotFound() throws Exception {
         //given
         UserUpdateRequest req = UserUpdateRequest.builder()
                 .userId(1L)
