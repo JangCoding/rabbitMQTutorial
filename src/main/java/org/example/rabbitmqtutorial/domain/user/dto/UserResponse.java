@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor  // 필요 시 (Jackson 등에서 사용)
+@AllArgsConstructor
 public class UserResponse {
     private Long userId;
     private String userName;
@@ -16,11 +17,11 @@ public class UserResponse {
     private LocalDateTime updatedAt;
 
 
-    public UserResponse(Long userId, String userName, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-    }
+//    public UserResponse(Long userId, String userName, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+//        this.userId = userId;
+//        this.userName = userName;
+//        this.email = email;
+//    }
 
     public static UserResponse from(User user)
     {
