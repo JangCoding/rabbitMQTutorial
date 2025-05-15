@@ -29,6 +29,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA
     implementation 'org.projectlombok:lombok'   // lombok
     annotationProcessor 'org.projectlombok:lombok'  // annotationProcessor 추가. 이게 있어야 lombok 이 코드 생성가능
