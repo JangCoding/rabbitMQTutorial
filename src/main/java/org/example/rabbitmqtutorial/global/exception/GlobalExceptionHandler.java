@@ -12,17 +12,23 @@ public class GlobalExceptionHandler {
     // EntityNotFoundException 처리
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex){
-        ErrorResponse errorResponse = new ErrorResponse("USER_NOT_FOUND", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse("---USER_NOT_FOUND---", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     // EmailAlreadyExistsException 처리
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex){
-        ErrorResponse errorResponse = new ErrorResponse("EMAIL_ALREADY_EXISTS", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse("---EMAIL_ALREADY_EXISTS---", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
+    // EmailSendException 처리
+    @ExceptionHandler(EmailSendException.class)
+    public ResponseEntity<ErrorResponse> handleEmailSendException(EmailSendException ex){
+        ErrorResponse errorResponse = new ErrorResponse("---EMAIL_SEND_EXCEPTION---", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 
     // 그 외 모든 예외 처리
     @ExceptionHandler(Exception.class)
