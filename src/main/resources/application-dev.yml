@@ -23,3 +23,25 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  mail:   # Gmail SMTP 설정. JavaMailSender 빈 자동구성
+    host: smtp.gmail.com
+    port: 587
+    username: lunaeker813@gmail.com # 실제 Gmail 계정
+    password: your-gmail-app-password     # Gmail 앱 비밀번호 (2단계 인증 사용 시)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000 # 연결 타임아웃 (ms)
+          timeout: 5000           # 읽기/쓰기 타임아웃 (ms)
+          writetimeout: 5000
